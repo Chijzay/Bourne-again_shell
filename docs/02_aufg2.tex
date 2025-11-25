@@ -1,0 +1,207 @@
+
+\ihead{SHELL-SKRIPTE}
+
+\section{Shell-Skripte}
+
+\begin{itemize}
+    \item[\textbf{a)}] Um ein Skript zu schreiben, welches alle aktuell laufenden Prozesse nach einem übergebenen String durchsucht, werden unterschiedliche Elemente benötigt, die nachfolgend kurz erklärt und anschließend in einem fertigen Skript gezeigt werden.
+        
+    \medskip
+
+    \begin{itemize}
+        \item \textbf{\texttt{\emph{\#!/bin/bash}}}
+    
+            Diese Zeile bewirkt, dass das Skript als \emph{bash-Skript} interpretiert wird. Daher wird sie auch als \emph{">Shebang"<} oder \emph{">Magic Line"<}\footnote{Vgl. \cite{sch16}: \emph{">Ein erstes Shell-Skript, der Skript-Start und das Shebang"<}, Min.: 4:55 bis 6:07} bezeichnet und meint die Shell, mit der das Skript ausgewertet wird. Das \emph{Shebang} steht stets in Zeile 1.
+
+    \medskip
+    
+        \item \textbf{\texttt{inputstring=\$1}}
+    
+            Diese Zeile entspricht einer Variablendeklaration und bewirkt, dass eine Variable mit dem Namen \texttt{inputstring} innerhalb des Skripts eingeführt wird. Außerdem wird der Variablen mit \texttt{=} der Wert \texttt{\$1} zugewiesen. \texttt{\$1} enthält zu diesem Zeitpunkt noch keinen Wert, erst wenn das Skript ausgeführt wird. Bei der Ausführung muss ein String angehängt werden, der an die Variable übergeben werden kann. Dieser ist an der Position \texttt{\$1}. Der an der zweiten Position würde mit \texttt{\$2} deklariert werden und der an der dritten mit \texttt{\$3} und so weiter.
+    
+    \medskip
+
+        \item \textbf{\texttt{ps -ef}}
+            
+            Der \emph{">\textbf{p}rocesse\textbf{s}"<} Befehl liefert eine Momentaufnahme aller laufenden Prozesse. Da dieser Befehl im Skript integriert ist und mit einem Pipe\footnote{Auch \emph{Befehlsverkettung} genannt mit Hilfe des \texttt{|} Symbols} mit anderen Befehlen verknüpft wird, gewährleistet es immer die aktuellste Momentaufnahme aller Prozesse, ohne eine separate Datei zu erzeugen. Kurz zu den Optionen:
+            
+            \begin{itemize}
+                \item[\textbf{\texttt{-e}}] Diese Option wählt \emph{">alle"<} Prozesse aus (identisch mit der Option \texttt{-A}).
+                \item[\textbf{\texttt{-f}}] Diese Option erzeugt eine detailliertere Ausgabe.
+            \end{itemize}
+    
+    \medskip
+            
+        \item \textbf{\texttt{grep \$inputstring}}
+
+            Der \emph{">\textbf{grep}"<}\footnote{Das Programm \texttt{grep} steht für \emph{">\textbf{g}lobal search for a \textbf{r}egular \textbf{e}xpression and \textbf{p}rint out matched lines"<}} Befehl durchsucht Dateien oder Ausgabe nach bestimmten Textstücken. Das Suchmuster entspricht einem regulären Ausdruck und die Ergebnisse werden auf der Standardausgabe geliefert oder in eine Datei gespeichert.
+
+            Der String, nach dem gesucht werden soll, wird nach dem \texttt{grep} Befehl notiert. Da bereits eine Variable mit dem Namen \texttt{inputstring} deklariert und mit einem übergebenen String initialisiert wurde, kann mit \texttt{\$inputstring} auf diese Variable und dementsprechend auch auf den String zugegriffen werden.
+            
+    \medskip
+
+        \item \textbf{\texttt{grep -v "grep"}}
+
+            Diese Anweisung ist für dieses Sktipt nicht relevant, verschönert aber die Ausgabe. Die \emph{">in\textbf{v}ert"<} Option \texttt{-v} bewirkt, dass die Suchergebnisse \emph{umgkehrt} werden. Es werden also alle Ergebnisse \emph{nicht} angezeigt, die einen Treffer auf eine Suchanfrage haben. Damit wird die Suchanfrage \emph{">grep"<} zwar gefunden, aber in der Ausgabe nicht als aktuell laufender Prozess angezeigt. 
+
+    \medskip
+
+        \item \textbf{\texttt{if (( \$\# == 1 )) then \dots{} else \dots{} fi}}
+        
+        Eine \texttt{if}-Abfrage ummantelt den Code, die mit \texttt{\$\#} die Anzahl der übergebenen Parameter überprüft. Diese muss genau eins entsprechen, andernfalls wird ein Satz mit der korrekten Benutzung des Skripts zurückgegeben. 
+    \end{itemize}
+    
+    \medskip
+    
+    Ein fertiges Skript \texttt{pf.sh} könnte für diese Anforderung folgendermaßen aussehen.
+
+    \medskip
+
+    \begin{lstlisting}
+    #!/bin/bash
+    
+    inputstring=$1
+    
+    if (( $# == 1 ))
+    then
+        ps -ef | grep $inputstring | grep -v "grep" 
+    else
+        echo "Usage: pf STRING"
+    fi
+    \end{lstlisting}
+
+    Wird das Skript mit dem übergebenen String \texttt{init} ausgeführt, werden als Momentaufnahme die nachfolgenden Zeilen und Werte ausgegeben (siehe Abbildung \ref{fig: pfsh}).
+    
+    
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/pfsh.png}}
+    \captionof{figure}{Ausgabe von \texttt{./pf.sh init}}
+        \label{fig: pfsh}
+    \end{minipage}
+    
+    \medskip
+    
+    Betrachten wir die Werte auf der Abbildung \ref{fig: pfsh} etwas genauer. Die einzelnen Spalten sind nun die Zeilen, die in der nachfolgenden Tabelle dargestellt sind.
+
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{c|c|c}
+        \toprule
+            \textbf{\texttt{UID}} & \texttt{root} & \texttt{abr561} \\
+            
+            \textbf{\texttt{PID}} & \texttt{1} & \texttt{14254} \\
+            
+            \textbf{\texttt{PPID}} & \texttt{0} & \texttt{14246} \\
+
+            \textbf{\texttt{C}} & in beiden Fällen \texttt{0} \\
+        
+            \textbf{\texttt{STIME}} & \texttt{Apr12} & \texttt{17:18} \\
+            
+            \textbf{\texttt{TTY}} & \texttt{?} & \texttt{pts/3} \\
+           
+            \textbf{\texttt{TIME}} & \texttt{00:00:29} & \texttt{00:00:00} \\
+    
+            \textbf{\texttt{CMD}} & \texttt{/sbin/init maybe-ubiquity} & \texttt{/bin/bash ./pf.sh init} \\
+            \bottomrule
+        \end{tabular}
+        %\caption{Spalten und Werte der Ausgabe \texttt{./pf.sh init}}
+        \label{tab: tabelle}
+    \end{table}
+
+\newpage
+
+    \item[\textbf{b)}] \textbf{\texttt{frename.sh}}
+    
+    \medskip
+
+    \begin{lstlisting}
+    #!/bin/bash
+    
+    inputdir=$1
+    inputstring=$2
+    
+    if (( $# == 2 ))
+    then
+        for file in $inputdir/*
+        do
+            if [[ "$file" == *.* ]]
+            then
+                filename=$(echo "$file" | cut -d '.' -f1)
+                fileextension=$(echo "$file" | cut -d '.' -f2)
+                mv "$file" "$filename""$inputstring"".""$fileextension"
+            else
+                mv "$file" "$file""$inputstring"
+            fi
+        done
+    else
+        echo "Usage: frename UNTERVERZEICHNIS STRING"
+    fi
+    \end{lstlisting}
+
+\bigskip
+
+\begin{description}
+    \item[Zeile 1 bis 7, 18 bis 21] 
+    
+        Hintergründe bereits bekannt aus dem vorherigen Shell-Skript (vgl. Zeile 1 bis 6 und 8 bis 10 der \texttt{pf.sh} auf der vorherigen Seite).
+    
+    \item[Zeile 8 bis 18] Ab Zeile 8 beginnt eine \texttt{for}-Schleife, die in Zeile 18 beendet wird. Sie bewirkt, dass jede Datei im angegebenen Verzeichnis \texttt{\$inputdir} \emph{betrachtet} und \emph{manipuliert} wird (in dem Fall des Skripts \texttt{frename.sh} also \emph{umbenannt}). Die Verwendung von \texttt{*} in \texttt{\$inputdir/*} vervollständigt somit jeden Dateipfad in dem angegebenen Verzeichnis (wie \texttt{\textasciitilde/frename.sh} für das Homeverzeichnis).
+
+    \begin{description}
+
+        \item[Zeile 10 bis 17] Bevor etwas mit den Dateien passiert, findet in Zeile 10 eine \texttt{if}-Abfrage statt, die mit dem regulären Ausdruck \texttt{*.*} überprüft, ob der Dateiname einen Punkt enthält. Ist dies \emph{true}, handelt es sich um eine Dateierweiterung, wie \texttt{*.sh}, \texttt{*.txt} oder Ähnliches. Ist dies der Fall, springt die Ausführung in den \texttt{then}, ansonsten in den \texttt{else} Abschnitt.
+
+        \begin{description}
+            \item[Zeile 12 bis 14] Befindet sich ein Punkt im Namen der Datei, dann muss der neue Name \emph{gebaut} werden. Dies geschieht in den Zeilen 12 bis 14. Zunächst wird der Name der Datei -- also der Teil, der sich vor dem Punkt befindet -- mit \texttt{cut -d '.' -f1} abgeschnitten und in eine Variable \texttt{filename} zwischengespeichert. Dasselbe geschieht mit der Dateierweiterung. Das \texttt{-f1} meint also den Teil vor dem Punkt und das \texttt{-f2} den Teil danach. Das \texttt{-d} steht für \emph{delimiter}, also \emph{Trennzeichen}. In Zeile 14 wird der neue Name zusammengesetzt und der alte mit \texttt{\$filename} + \texttt{\$inputstring} + \texttt{.} + \texttt{\$fileextension} überschrieben.
+
+            \item[Zeile 15 bis 17] Befindet sich kein Punkt im Namen der Datei, handelt es sich um ein Verzeichnis. In diesem Fall wird lediglich der \texttt{\$inputstring} an den alten Namen angehängt. Da hier mit Strings gearbeitet wird, spielt es keine Rolle, ob ein Leerzeichen im Dateinamen vorhanden ist oder nicht. Der Inputstring wird immer an das Ende des Namens angehängt -- auch wenn keine Dateierweiterung vorhanden ist.
+        \end{description}
+    \end{description}
+\end{description}
+
+    \bigskip
+    \bigskip
+
+    \item[\textbf{c)}] Um den Status eines Skripts auf \emph{">ausführbar"<} zu ändern, wird der \emph{">\textbf{ch}ange \textbf{mod}e"<} Befehl benötigt. Dadurch kann jedes Skript als Programm gestartet werden, sodass der Aufruf von \texttt{bash} nicht mehr voran gestellt werden muss. Anstelle von \texttt{bash} tritt ein ">\texttt{./}"<, sofern sich das Skript im aktuellen Arbeitsverzeichnis befindet. Andernfalls muss anstelle von ">\texttt{./}"< der gesamte Pfad zum Skript angegeben werden.
+    
+    \medskip
+    
+    \begin{lstlisting}
+    chmod a+x pf.sh
+    chmod a+x frename.sh
+    \end{lstlisting}
+
+    Der Aufruf von \texttt{chmod} bewirkt, dass sich die Rechte einer Datei verändern. Diese Veränderung hat auch nach einem Neustart der Eingabeaufforderung bestand. Das \texttt{a} von \texttt{a+x} steht für \emph{">\textbf{a}ll"<} und das \texttt{x} für \emph{">e\textbf{x}ecute"<}. Mit diesem Befehl wird das jeweilige Skript also für alle Benutzer (Eigentümer, Gruppe, Rest) ausführbar gemacht.
+    
+    Ob die Datei erfolgreich ausführbar gemacht wurde, kann mit dem aus der Teilaufgabe 1.a.7. bekannten Befehl (siehe Seite \pageref{teilaufgabe7}) getestet werden. Das Muster in der ersten Spalte für die Rechte hat sich von \texttt{-rw-r-{}-r-{}-} in \texttt{-rwxr-xr-x} geändert.
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/lslh_nach_chmod.png}}
+    \captionof{figure}{Ausgabe von \texttt{ls -lh} nach \texttt{chmod a+x}}
+        \label{fig: lslh_nach_chmod}
+    \end{minipage}
+
+    \newpage
+
+    \label{pathextend}
+    \item[\textbf{d)}] Die Umgebungsvariable \texttt{\$PATH} kann mit einem kleinen Befehl erweitert werden. Wie dieser aussieht, damit immer das momentan aktuelle Verzeichnis in der Umgebungsvariablen \texttt{\$PATH} gehalten wird, soll das nachfolgende Beispiel zeigen.
+    
+    \medskip
+    
+    \begin{lstlisting}
+    PATH=$PATH:"." # alternativ auch nur . statt "."
+    \end{lstlisting}
+    
+    Beim Aufruf von \texttt{echo \$PATH} wird nun eben dieser Punkt an letzter Stelle angezeigt.
+    
+    \medskip
+    
+    \textbf{Achtung:} 
+    
+    Diese Erweiterung geht nach einem Neustart der Eingabeaufforderung verloren.
+        
+\end{itemize}

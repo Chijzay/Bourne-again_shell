@@ -1,0 +1,629 @@
+
+\ihead{ERSTE ERFAHRUNGEN MIT DER BASH -- SHELL}
+
+\section{Erste Erfahrungen mit der bash -- Shell}
+
+
+%----------------------------------------------
+% AUFGABE A
+%----------------------------------------------
+
+
+\begin{itemize}
+    \bigskip
+    \item[\textbf{a)}] \textbf{Shellbefehle ausführen} 
+    \medskip
+
+    \begin{enumerate}
+        \label{teilaufgabe1}
+        \item[\textbf{1.}] Mit dem nachfolgenden Befehl können alle Datei- und Ordnernamen im aktuellen Arbeitsverzeichnis ausgegeben werden. Der Befehl entspricht einer Abkürzung, die aus den ersten drei Buchstaben von \emph{">\textbf{dir}ectories"<} besteht.
+        
+    \medskip
+    \begin{lstlisting}
+    dir # offiziell von Windows, unter Linux nicht empfohlen
+    \end{lstlisting}
+       
+       Die Verwendung von \texttt{dir} ist jedoch nicht die einzige Möglichkeit. Ein weiteres Beispiel ist \emph{">\textbf{l}i\textbf{s}t"<}, dessen Ausgabe identisch mit der von \texttt{dir} ist.
+       
+    \medskip
+    \begin{lstlisting}
+    ls # identisch mit dir, ofizieller Linux Befehl
+    \end{lstlisting}
+       
+        Sowohl an \texttt{dir}, als auch an \texttt{ls}, können \emph{Optionen} angehängt werden, um eine angepasste Ausgabe zu erzeugen. So kann diese nach Dateityp gefiltert oder in \emph{Langform} mit Metadaten ausgegeben werden (siehe Abbildung \ref{fig: dirls} unten).
+
+    \medskip
+    \begin{lstlisting}
+    # liefert alle Datei-Informationen in Langform
+    dir -l || ls -l
+    # liefert Dateien mit der Endung .txt in Kurz- bzw. Langform
+    dir [-l] *.txt || ls [-l] *.txt
+    \end{lstlisting}
+    
+    Abbildung \ref{fig: dirls} zeigt die Ausgabe von \texttt{dir}, die identisch mit der von \texttt{ls} ist und von \texttt{ls -l *.sh}, die identisch mit \texttt{dir -l *.sh} ist. Anstelle von \texttt{*.sh} kann auch ein expliziter Dateiname angegeben werden (wie \texttt{ls -l showme.sh}), um sich die Datei-Informationen über eine bestimmte Datei ausgeben zu lassen.
+    
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/dirls.png}}
+    \captionof{figure}{Ausgabe von \texttt{dir} und \texttt{ls -l *.sh}}
+        \label{fig: dirls}
+    \end{minipage}
+
+\medskip
+
+\textbf{Hinweis:} 
+
+Hinter dem salopp verwendeten Begriff \emph{">Befehl"<} steckt etwas mehr, als es in dieser Ausarbeitung deutlich wird. Genau genommen stellt die Verwendung -- wie zum Beispiel von \texttt{ls} -- einen \emph{">Built-in"<} Befehl dar, der vergleichbar mit einem Programmaufruf ist. Die Shell analysiert also den Befehl und führt diesen anschließend selbst aus. Andernfalls würde ein Befehl durch einen von der Shell ausgelösten \emph{System Call} als neues Programm ausgeführt werden. 
+
+
+    \newpage
+
+        \label{teilaufgabe2}
+        \item[\textbf{2.}] Um eine Datei mit dem Namen \texttt{heute} zu erstellen, die das aktuelle Datum und die aktuelle Uhrzeit enthält, ist nur ein Shellbefehl notwendig. Realisieren lässt sich dies mit einer sogenannten \emph{Ausgabeumlenkung}. Das bedeutet, dass die gewünschte Ausgabe nicht auf der Standardausgabe erscheint, sondern in eine separate Datei im aktuellen Arbeitsverzeichnis gespeichert werden soll.
+
+    \medskip
+    \begin{lstlisting}
+    date > heute.txt || > heute.txt date
+    \end{lstlisting}
+
+        Mit dem Befehl \texttt{date} wird die aktuelle Systemzeit ausgelesen und mit dem \texttt{>} Zeichen in eine Textdatei \texttt{heute.txt} umgelenkt und abschließend im aktuellen Arbeitsverzeichnis gespeichert. Der Dateiname \emph{">heute"<} ist optional, daher wären auch andere Dateinamen an dieser Stelle vorstellbar, wie \emph{">today"<} oder \emph{">current\_systemtime"<}, aber auch nur ein \emph{">h"<}. Bei der Wahl des Dateinamen muss weder auf reservierte Schlüsselworte geachtet werden, noch ist eine Dateiendung zwingend notwendig. Ist der Dateiname aber bereits im Arbeitsverzeichnis vorhanden, wird die Datei ohne Rückmeldung überschrieben. Es wäre also auch der nachfolgende Befehl für eine lesbare Datei möglich.
+        
+    \medskip
+    \begin{lstlisting}
+    date > pwd
+    \end{lstlisting}
+    
+        Der \texttt{>} Operator ist nicht zu verwechseln mit dem \texttt{>{}>} Operator, der Strings oder ganze Ausgaben unten an die angegebene Datei anhängt.
+    
+        Nachdem die Datei erstellt wurde, kann mit \texttt{dir} oder \texttt{ls} überprüft werden, ob die Datei (hier \texttt{heute.txt}) tatsächlich im aktuellen Arbeitsverzeichnis abgelegt wurde. Möchte man die Datei hingegen öffnen, hat man gleich mehrere Möglichkeiten, die im Folgenden kurz vorgestellt werden. 
+        
+    \medskip
+    \begin{lstlisting}
+    cat heute.txt # Textdatei auf Standardausgabe ausgeben
+    less heute.txt # Textdatei in einem Pager anzeigen 
+    more heute.txt # Textdatei Seitenweise anzeigen
+    nano heute.txt # öffnet die Textdatei im Nano-Texteditor
+    \end{lstlisting}
+
+\begin{description}
+\item[\texttt{cat}] Ursprünglich war der \texttt{cat} Befehl zum Zusammenfügen von Textdateien gedacht, daher kommt der Name auch von \emph{">con\textbf{cat}enate"<}. Häufig wird dieser Befehl aber zum anzeigen von kurzen Textdateien verwendet\footnote{Vgl. Eintrag zu \texttt{cat} auf \cite{ubuus}, abgerufen am 27. März 2019}. 
+
+        Die Abbildung \ref{fig: cat} zeigt den Inhalt der Datei \texttt{heute.txt}, der mit dem \texttt{cat} Befehl auf der Standardausgabe (auch \emph{">Stdout"<}) ausgegeben wurde.
+
+\medskip
+\begin{minipage}[!ht]{\linewidth}
+    \centering
+    \fbox{\includegraphics[width=.6 \linewidth]{img/cat.png}}
+    \captionof{figure}{Inhalt der Datei \texttt{heute.txt}}
+        \label{fig: cat}
+\end{minipage}
+\medskip
+
+\item[\texttt{less}] Mit \texttt{less} öffnet sich ein Pager, der den Inhalt einer Textdatei anzeigt. Im vergleich zu \texttt{more} bietet \texttt{less} den Vorteil, dass man sich mit Hilfe der Tasten \keys{\arrowkeyup} oder \keys{\arrowkeydown} frei im Dokument nach oben oder unten bewegen kann, was bei langen Texten hilfreich sein kann. Geschlossen wird der Pager mit der \keys{Q} Taste und nicht mit \keys{Strg + X}, wie es bei \texttt{nano} der Fall ist. Ist dieser geschlossen, verschwindet der Inhalt der Textdatei auch auf der Standardausgabe, was bei der Verwendung von \texttt{more} nicht der Fall ist.
+
+\medskip
+
+\label{more}
+\item[\texttt{more}] Mit \texttt{more} öffnet sich der Inhalt einer Textdatei seitenweise auf der Standardausgabe. Das Anzeigen mit \texttt{less} wird zwar als bequemere Alternative zu \texttt{more} bezeichnet, jedoch ist \texttt{less} nicht wie \texttt{more} auf allen UNIX-Systemen vorhanden\footnote{Vgl. Eintrag zu \texttt{more} auf \cite{ubuus}, abgerufen am 27. März 2019}. Hat die Textdatei mehr Zeilen als die Fensterhöhe, so muss die Datei entweder mit der \keys{\return} Taste eine Zeile oder mit der \keys{\Space} Taste eine Bildschirmseite weiter aufgeklappt werden. Mit \keys{B} kann eine Bildschirmseite zurück geblättert werden und mit \keys{F} wird eine Bildschirmseite übersprungen. Mit \keys{S} wird nur eine Zeile übersprungen. 
+
+Wie viel des Textes bereits angezeigt wird, gibt der prozentuale Fortschritt an, der unten links am Fenster steht. Wird also genau die Hälfte des Textes angezeigt, wird dies mit \texttt{--More-- (50\%)} angegeben. Die seitenweise Ausgabe kann wie \texttt{less} mit der \keys{Q} Taste abgebrochen oder beendet werden.
+
+\medskip
+
+\item[\texttt{nano}] Mit dem Befehl \texttt{nano} öffnet sich ein separater Texteditor, in dem die Textdatei eingesehen, bearbeitet und abgespeichert werden kann. Als Alternative zu \texttt{nano} kann die Anwendung \texttt{vi} verwendet werden.
+\end{description}
+
+
+        \bigskip
+        \bigskip
+
+
+        \item[\textbf{3.}] Um eine Datei mit dem Namen \texttt{platz} zu erstellen, die alle Informationen über das aktuelle Dateisystem abspeichert -- inklusive der Belegung in Prozent und mit optimierten Größenangaben -- bedarf es auch hier nur eines Befehls, der dem aus der vorherigen Teilaufgabe sehr ähnlich ist. 
+        
+        Möchte man also eine Einschätzung über die verbrauchten Speicherkapazitäten auf dem aktuellen System erhalten, wird idealerweise der \emph{">\textbf{d}isk \textbf{f}ree"<} Befehl verwendet. Mit Hilfe des \texttt{>} Zeichen wird die Abfrage, wie in der vorherigen Teilaufgabe bereits erklärt, in eine Textdatei umgelenkt und abschließend gespeichert. Der vollständige Befehl sieht folgendermaßen aus.
+
+    \medskip
+    \begin{lstlisting}
+    df -h > platz.txt
+    \end{lstlisting}
+
+        \label{-h}
+        Bei diesem Aufruf gibt es bis auf den \texttt{df} Befehl und die verwendete Option \emph{">-h"<} also nichts Neues. Das \texttt{-h} hinter dem \texttt{df} Befehl steht ausgeschrieben für \emph{">human readable"<} und gibt die Größe der verbrauchten Speicherkapazität in ein \emph{für Menschen lesbares} Format an.\footnote{Vgl. Eintrag zu \texttt{df} auf \cite{ubuus}, abgerufen am 27. März 2019} Wie sich die Ausgabe verändert, würde man an dieser Stelle auf das \texttt{-h} verzichten, soll die Abbildung \ref{fig: head_a_h} demonstrieren. Diese Abbildung begrenzt sich auf die ersten fünf Zeilen der Textdatei. Der hier verwendete \texttt{head} Befehl wird in der nächsten Teilaufgabe erläutert.
+
+        Die Abbildung \ref{fig: platz} zeigt den Inhalt der \texttt{platz.txt} in seiner vollen Pracht. In der Spalte \texttt{Size} wird der verfügbare Gesamtspeicher in Kibibyte \texttt{K}, Mebibyte \texttt{M}, Gibibyte \texttt{G}, Tebibyte \texttt{T} und so weiter angegeben. In der Spalte \texttt{Used} steht der tatsächlich verbrauchte Speicherplatz und in der Spalte \texttt{Avail} der freie Speicherplatz. Die Spalte \texttt{Use \%} gibt den prozentualen Speicherverbrauch an.
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/platz.png}}
+    \captionof{figure}{Inhalt der Datei \texttt{platz.txt}}
+        \label{fig: platz}
+    \end{minipage}
+
+\medskip
+
+Betrachten wir die Spalte \texttt{Avail} oder \texttt{Available} etwas genauer: Wie bereits erwähnt gibt diese Spalte an, wie viel Speicher noch verwendet werden kann, abhängig von der Gesamtspeicherkapazität, die in der Spalte \texttt{Size} angegeben wird. Somit sind in \texttt{udev} in Zeile 2 noch \texttt{464M} verfügbar von ingesamt \texttt{464M}. Es sind also \texttt{0\%} belegt. In Zeile 13 hingegen sind in \texttt{/dev/loop3} noch \texttt{0M} verfügbar. Hier sind 100\% der verfügbaren Speicherkapazität verbraucht. 
+
+
+\newpage
+
+
+Würde dem \texttt{df} Befehl nicht die Option \texttt{-h} folgen, würde der verfügbare, verbrauchte bzw. freie Speicherplatz in den Spalten \texttt{Size}, \texttt{Used} und \texttt{Avail} nicht in \texttt{K}, \texttt{M}, \texttt{G}, \texttt{T} und so weiter\footnote{Freundlich gerundet lässt sich sagen: \texttt{M} = Megabyte, \texttt{G} = Gigabyte, \texttt{T} = Terabyte, \dots und so weiter.} ausgegeben werden. Wie die Ausgabe für die ersten fünf Zeilen der \texttt{platz.txt} dann aussehen würde, soll die Abbildung \ref{fig: head_a_h} zeigen. In Zeile 4 auf Abbildung \ref{fig: platz} wurde beispielsweise bei \texttt{/dev/sda2} = \texttt{Size 16G} angezeigt. Ohne \texttt{-h} zeigt Abbildung \ref{fig: head_a_h} für dieselbe Zeile \texttt{16445308} an. 
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/df_a_h.png}}
+    \captionof{figure}{Ausgabe von \texttt{df | head -5}}
+        \label{fig: head_a_h}
+    \end{minipage}
+
+
+        \bigskip
+        \bigskip
+        
+        \item[\textbf{4.}] Sollen die ersten fünf Zeilen einer Datei ausgegeben werden -- wie die, aus der in der vorherigen Teilaufgabe erstellten Textdatei \texttt{platz.txt} -- hat man mehrere Möglichkeiten, die im Folgenden kurz vorgestellt werden.
+                        
+        \medskip
+        
+        \begin{itemize}
+            \item \textbf{Die empfohlene Variante}
+
+                Mit dem unten stehenden Befehl \texttt{head -5 <file>} werden nur die ersten Zeilen von $1, 2, \dots, n$ mit $n \geq 1$ ausgegeben. Die Option \texttt{-n} (hier \texttt{-5}) bedeutet umgangssprachlich: \emph{">Liefere die obersten (\emph{\texttt{head}}) $-n$ (mit $n=5$) Zeilen der Textdatei \dots (hier \emph{\texttt{platz.txt})}"<}. Es werden also nur die ersten fünf Zeilen der Textdatei \texttt{platz.txt} verlangt und ausgegeben. 
+            
+                Wird für $n=0$ angegeben, werden entsprechend keine Zeilen ausgegeben.
+                
+    \medskip
+    \begin{lstlisting}
+    head -5 platz.txt 
+    \end{lstlisting}
+    
+            Die Abbildung \ref{fig: platzhead} zeigt die Ausgabe des Befehls \texttt{head -5 platz.txt}.
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/platzhead.png}}
+    \captionof{figure}{Ausgabe von \texttt{head -5 platz.txt}}
+        \label{fig: platzhead}
+    \end{minipage}
+    
+    \newpage
+    
+            \item \textbf{Geht auch, ist aber umständlich}
+
+            Statt \texttt{head -5} ist auch \texttt{head -n 5} möglich. Die Ausgabe ist dieselbe, daher ist diese Variante umständlicher, da \texttt{-n 5} zu \texttt{-5} vereinfacht werden kann.
+
+    \medskip
+    \begin{lstlisting}
+    head -n 5 platz.txt || head -n -20 platz.txt
+    \end{lstlisting}
+                
+            Aber es geht noch umständlicher:
+            
+            Wird die Option \texttt{-n} im Befehl integriert, beschränkt sich die Angabe der maximal auszugebenden Zeilen nicht mehr auf alle Zeilen mit $n \geq 1$. Somit werden auch Zeilen mit $n < 0$ möglich. Auf diese Weise können $-1, -2, \dots, -n$ Zeilen einer Textdatei für die Ausgabe \emph{">abgeschnitten"<} werden. Der Befehl \texttt{head -n -5 <file>} führt also dazu, dass die untersten fünf Zeilen der Textdatei nicht ausgegeben werden. 
+            
+            Mit \texttt{head -n -20 <file>} werden die untersten 20 Zeilen nicht ausgegeben. Die Textdatei \texttt{platz.txt} hat insgesamt 25 Zeilen. Da die untersten 20 Zeilen nicht ausgegeben werden, bleiben $25-20=5$ Zeilen übrig. Somit erfüllt dieser Befehl zwar die Anforderung, ist aber sehr umständlich. 
+            
+            Ausßerdem setzt die hier vorgestellte Variante voraus, dass die Anzahl aller Zeilen in der Textdatei bekannt ist. Dementsprechend gilt die \texttt{-20} nur für die hier vorgestellte Textdatei \texttt{platz.txt} und muss für jede andere Textdatei angepasst werden. Zum Glück: Einfacher ist es mit \texttt{head -5}.
+        
+                \bigskip
+
+            \item \textbf{Mit \emph{">stream editor"<}}
+
+            Eine weitere Möglichkeit, mit der sich diese Ausgabe realisieren lässt, ist der \emph{">\textbf{s}tream \textbf{ed}itor"<} Befehl \texttt{sed}. Die Option \texttt{-n} bedeutet hier nicht \emph{$n$ Zeilen ausgeben}, sondern meint die Verhinderung der automatischen Ausgabe der Ergebnisse. Die Ausgabe erfolgt nur über das Kommando \texttt{p}.\footnote{Vgl. Eintrag zu \texttt{sed} auf \cite{ubuus}, abgerufen am 28. März 2019}
+             
+    \medskip
+    \begin{lstlisting}
+    sed -n 1,5p platz.txt
+    \end{lstlisting}
+        \end{itemize}
+
+    \bigskip
+    
+    Wird bei der Benutzung des \texttt{head} Befehls keine maximal auszugebende Zeilenanzahl angegeben, wird der Standardwert von $n=10$ Zeilen verwendet.
+    
+    \medskip
+    \begin{lstlisting}
+    head palatz.txt # Standardwert mit n=10 Zeilen
+    \end{lstlisting}
+
+    
+    \newpage
+
+
+   \textbf{Zu einem \texttt{head} gehört auch ein \texttt{tail}}
+    
+    Die Benutzung von \texttt{tail} verläuft analog zum \texttt{head} Befehl. Wird die \texttt{-n} Option im Befehl integriert, hat das Vorzeichen -- also ob man \texttt{tail -n \textbf{5}} oder \texttt{tail -n \textbf{-5}} benutzt -- keinen Effekt auf die Ausgabe. Bei der Verwendung von \texttt{head} ist dies nicht der Fall und führt zu einer Abtrennung der untersten fünf Zeilen.
+
+    \medskip
+    \begin{lstlisting}
+    tail -5 platz.txt
+    tail -n -5 platz.txt || tail -n 5 platz.txt # identisch
+    \end{lstlisting}
+    
+    Die Abbildung \ref{fig: platztail} zeigt abschließend die Benutzung des \texttt{tail} Befehls.
+    
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/platztail.png}}
+    \captionof{figure}{Ausgabe von \texttt{tail -5 platz.txt}}
+        \label{fig: platztail}
+    \end{minipage}
+        
+    
+        \bigskip
+        \bigskip
+        \item[\textbf{5.}] Um eine Datei mit dem Namen \texttt{prozessbaum} zu erstellen, die alle aktuellen Prozesse in einer übersichtlichen Baumdarstellung beinhaltet, wird von Bash die praktische Funktion \emph{">\textbf{p}rocesse\textbf{s} \textbf{tree}"<} mitgeliefert. Für jeden Prozessnamen soll zusätzlich die jeweilige Prozess-ID angegeben werden. Dafür wird lediglich die Option \texttt{-p} am Befehl angehängt. Das \texttt{-p} steht für \texttt{PID}, also \emph{Process-ID}.\footnote{Vgl. Eintrag zu \texttt{pstree} auf \cite{ubuus}, abgerufen am 10. April 2019}
+    
+    \medskip
+    \begin{lstlisting}
+    pstree -p > prozessbaum.txt
+    \end{lstlisting}
+
+    Die Abbildung \ref{fig: pstreevgl} zeigt zwei Ausschnitte von Prozessbäumen im Vergleich.
+        
+        
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/pstreevgl.png}}
+    \captionof{figure}{Ausgabe von \texttt{pstree -p | head -5} und \texttt{pstree | head -5}}
+        \label{fig: pstreevgl}
+    \end{minipage}
+
+
+        Der obere Ausschnitt auf Abbildung \ref{fig: pstreevgl} zeigt einen Prozessbaum, bei dem die Prozess-ID an den jeweiligen Prozessnamen anhängt (gut zu erkennen an der Zahl innerhalb der runden Klammer, wie \texttt{systemd(1)} oder \texttt{atd(940)}). 
+        
+        Der unter Ausschnitt zeigt hingegen einen Prozessbaum, bei dem keine einzige Prozess-ID angegeben wird. Hier wurde die Option \texttt{-p} also nicht verwendet. Außerdem ist zu erkennen, dass die Kindknoten vom Prozess \texttt{accounts-daemon} dieselbe Bezeichnung haben, wie der Elternknoten. Ohne die IDs wird der komplette Teilbaum mit \texttt{-{}-{}-2$^*$[\{accounts-deaemon\}]} in einer Menge zusammengefasst. Die Option \texttt{-p} bewirkt also auch einen detaillierteren Prozessbaum.
+        
+        
+        \bigskip
+        \bigskip
+        \item[\textbf{6.}] Um sich die Datei \texttt{prozessbaum.txt} seitenweise ausgeben zu lassen, muss der Befehl \texttt{more} verwendet werden. Dieser wurde auf Seite \pageref{more} bereits beschrieben.
+
+    \medskip
+    \begin{lstlisting}
+    more prozessbaum.txt
+    \end{lstlisting}
+
+            Die Abbildung \ref{fig: moreprozessbaum} zeigt den Prozessbaum, der zu 26\% mit \texttt{more} geöffnet ist.
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/moreprozessbaum.png}}
+    \captionof{figure}{Ausgabe von \texttt{more prozessbaum.txt}}
+        \label{fig: moreprozessbaum}
+    \end{minipage}
+    
+        
+        \bigskip
+        \bigskip
+        \label{teilaufgabe7}
+        \item[\textbf{7.}] Um sich alle Dateinamen sowie Rechte- und Größeninformationen der Dateien im aktuellen Arbeitsverzeichnis anzeigen zu lassen, können bereits bekannte Elemente aus den vorherigen Teilaufgaben 1 und 3 verwendet werden. 
+
+    \medskip
+    \begin{lstlisting}
+    ls -lh
+    \end{lstlisting}
+
+    Optionen können miteinander verknüpft werden. So entsteht aus \texttt{-l} und \texttt{-h} die kombinierte Option \texttt{-lh}. Es können auch mehr als zwei Optionen verknüpft werden, sodass \texttt{ls -lahm} entstehen würde -- sofern solch eine Abfrage benötigt wird. In diesem Fall wurden nur die nachfolgenden zwei Optionen gebraucht.
+
+    \begin{description}
+        \item[-l] Diese Option wurde auf Seite \pageref{teilaufgabe1} vorgestellt und mit Beispielen erläutert. Sie bedeutet: \emph{">Datei-Informationen in Langform ausgeben"<}.
+        \item[-h] Diese Option wurde auf Seite \pageref{-h} vorgestellt und bedeutet \emph{">human readable"<}.
+    \end{description}
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/lslh.png}}
+    \captionof{figure}{Ausgabe von \texttt{ls -lh}}
+        \label{fig: lslh}
+    \end{minipage}
+    
+    \medskip
+    Der Inhalt einer Datei-Information in Langform sieht wie folgt aus.
+    
+    \begin{itemize}
+        \item \textbf{Rechte} -- diese geben die Lese- (\texttt{r} für \emph{read}), Schreib- (\texttt{w} für \emph{write}) und Ausführungsrechte (\texttt{x} für \emph{execute}) an. Unterschieden wird in: \texttt{-rw-} Eigentümer, \texttt{r-{}-} Gruppe und \texttt{r-{}-} alle anderen. Diese formen das Muster \texttt{-rw-r-{}-r-{}-}.
+        
+        \item \textbf{Hardinks} -- hierbei handelt es sich um Einträge im Dateisystem mit einem Namen, der auf den tatsächlichen Speicherplatz einer Datei zeigt.\footnote{Vgl. Eintrag zu \texttt{ln} auf \cite{ubuus}, abgerufen am 17. April 2019}
+        
+        \item \textbf{Eigentümer} -- hier \texttt{abr561} und \textbf{Gruppe} -- hier \texttt{students}
+        
+        \item \textbf{Dateigröße} -- die Datei \texttt{prozessbaum.txt} ist \texttt{3,7K} groß
+        
+        \item \textbf{Änderungsdatum} -- die Datei \texttt{prozessbaum.txt} wurde das letzte Mal am \texttt{10 Apr} diesen Jahres um \texttt{22:06} geändert 
+        
+        \item \textbf{Dateiname} -- zum Beispiel \texttt{heute.txt} oder \texttt{platz.txt}
+    \end{itemize}
+    
+    
+        \bigskip
+        \bigskip
+        \item[\textbf{8.}] Um sich alle Dateinamen im aktuellen Arbeitsverzeichnis anzeigen zu lassen, die nur mit dem Buchstaben \emph{">p"<} beginnen, kann ebenfalls der \texttt{ls} Befehl mit der Option \texttt{-d} und dem regulären Ausdruck \texttt{p*} verwendet werden. 
+        
+    \medskip
+    \begin{lstlisting}
+    ls -d p*
+    \end{lstlisting}
+
+        Die Option \texttt{-d} steht für \emph{">\textbf{d}irectory"<} und bewirkt, dass nur die Namen der Verzeichnisse und nicht deren Inhalte aufgelistet werden. Das \texttt{p*} entspricht einem regulären Ausdruck, der für Namen steht, die mindestens aus einem \emph{">p"<} bestehen, gefolgt von einer beliebigen Zeichenkette oder nichts.
+        
+        Die Abbildung \ref{fig: beginnp} zeigt die Ausgabe von \texttt{ls -d p*} und somit alle Dateien im Arbeitsverzeichnis, die mit \emph{">p"<} beginnen. Zum Vergleich ist im unteren Abschnitt die Ausgabe von \texttt{ls -d *p} zu sehen, die alle Dateien im Arbeitsverzeichnis zeigt, die mit \emph{">p"<} enden. In diesem Fall war dies nur eine Datei.
+        
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.76 \linewidth]{img/beginnp.png}}
+    \captionof{figure}{Ausgabe von \texttt{ls -d p*} und \texttt{ls -d *p}}
+        \label{fig: beginnp}
+    \end{minipage}
+    
+    \medskip
+    
+    Die nachfolgende Abbildung \ref{fig: lspvgl} soll veranschaulichen, wie die Ausgabe beim Verzicht auf die Option \texttt{-d} aussehen würde. Die aufgelisteten Dateien sind identisch mit denen, die in dem Verzeichnis \texttt{Dekstop} enthalten sind. Ohne die Option würde sich die Ausgabe also nicht nur auf das aktuelle Arbeitsverzeichnis beschränken, sondern auch auf alle Unterverzeichnisse.
+
+    \medskip
+    \begin{minipage}[!ht]{\linewidth}
+        \centering
+        \fbox{\includegraphics[width=.98 \linewidth]{img/lspvgl.png}}
+    \captionof{figure}{Ausgabe von \texttt{ls *p}}
+        \label{fig: lspvgl}
+    \end{minipage}
+
+
+        \bigskip
+        \bigskip
+        \item[\textbf{9.}]  Um ein neues Verzeichnis mit dem Namen \texttt{meindir} zu erstellen, wird der \emph{">\textbf{m}a\textbf{k}e \textbf{dir}ectory"<} Befehl verwendet. Wird das Verzeichnis wie im nachfolgenden Beispiel erstellt, ist dieses leer. Es ist zu beachten, dass für Verzeichnisnamen dieselben Regeln gelten, wie für Dateinamen, die auf Seite \pageref{teilaufgabe2} bereits vorgestellt wurden. Außerdem kann eine Überprüfung mit \texttt{ls} oder \texttt{dir} nützlich sein, um zu kontrollieren, ob das Verzeichnis erfolgreich erstellt wurde.
+
+    \medskip
+    \begin{lstlisting}
+    mkdir meindir
+    \end{lstlisting}
+
+     
+        \bigskip
+        \bigskip
+        \item[\textbf{10.}] Um die Datei \texttt{prozessbaum.txt} in das Unterverzeichnis \texttt{meindir} zu verschieben, kann der \emph{">\textbf{m}o\textbf{v}e"<} Befehl verwendet werden. Beim Verschieben muss beachtet werden, dass das angegebene Verzeichnis existiert bzw. richtig geschrieben wird. Ist dies nicht der Fall, wird die Datei lediglich in den Namen des vermeintlichen Verzeichnisses umbenannt und nicht verschoben.
+        
+    \medskip
+    \begin{lstlisting}
+    # mv <file> <target_directory>
+    mv prozessbaum.txt meindir
+    \end{lstlisting}
+
+        Möchte man sicher sein und mögliche Fehler vermeiden, die später schwer zu finden sind, kann auch der Pfad des Zielverzeichnisses angegeben werden.
+
+    \medskip
+    \begin{lstlisting}
+    # ausgehend vom Homeverzeichnis
+    mv prozessbaum.txt $HOME/meindir 
+    mv prozessbaum.txt ~/meindir 
+    
+    # ausgehend vom aktuellen Arbeitsverzeichnis
+    mv prozessbaum.txt ./meindir 
+    \end{lstlisting}
+
+
+        \bigskip
+        \bigskip
+        \item[\textbf{11.}] Um alle Dateipfade von Dateien im aktuellen Arbeitsverzeichnis und dessen Unterverzeichnisse zu durchsuchen -- die mit dem Buchstaben \emph{">p"<} beginnen -- und anschließend ausgeben zu lassen, wird der \emph{">\textbf{find}"<} Befehl benötigt.
+        
+    \medskip
+    \begin{lstlisting}
+    find . -name "p*"
+    \end{lstlisting}
+        
+        \medskip
+
+        Der \texttt{.} nach dem Befehl definiert das Startverzeichnis, ab dem die Suche beginnen soll. Ein Verzeichnispfad wäre ebenfalls denkbar, jedoch steht der Punkt für das \emph{aktuelle Arbeitsverzeichnis}. Die Option \texttt{-name} entspricht einer Option und ist keine Verknüpfung aus vier. Diese bewirkt, dass nach Dateinamen gesucht wird -- unter Berücksichtigung der Groß- und Kleinschreibung. Anders als bei der Teilaufgabe 8 muss hier \texttt{"p*"} in Anführungsstrichen stehen. Mit \texttt{-name} kann mit \texttt{find . -name showme.sh} auch nach einer bestimmten Datei gesucht werden. In diesem Fall sind die Anführungsstriche nicht mehr notwendig.
+        
+        
+        \bigskip
+        \bigskip
+        \item[\textbf{12.}] Um in das in der Teilaufgabe 9 erstellte Unterverzeichnis \texttt{meindir} zu wechseln, kann der \emph{">\textbf{c}hange \textbf{d}irectory"<} Befehl unter Berücksichtigung der Groß- und Kleinschreibung verwendet werden. Mit dem \texttt{cd} Befehl kann auch in ein beliebiges Verzeichnis oder Unterverzeichnis von jedem anderen Verzeichnis aus gewechselt werden, sofern der Pfad angegeben wird. Für den Wechsel in das Unterverzeichnis \texttt{meindir} reicht der nachfolgende Befehl völlig aus.
+        
+    \medskip
+    \begin{lstlisting}
+    cd meindir
+    \end{lstlisting}
+        
+        Wird ein Verzeichnis beim Aufruf des \texttt{cd} Befehls nicht gefunden, wird der Hinweis zurückgegeben, dass jenes Verzeichnis nicht existiert. 
+        
+    \medskip
+    \begin{lstlisting}
+    cd <foreign_directory>
+    -bash: cd: <foreign_directory>: No such file or directory
+    \end{lstlisting}
+
+
+        \bigskip
+        \bigskip
+
+        \item[\textbf{13.}] Um die Textdatei \texttt{prozessbaum.txt} in eine neue Textdatei mit dem Namen \texttt{pb.txt} zu kopieren, kann der \emph{">\textbf{c}o\textbf{p}y"<} Befehl verwendet werden. Mit diesem Befehl können Dateien aber auch ganze Verzeichnisse kopiert werden. 
+        
+    \medskip
+    \begin{lstlisting}
+    cp prozessbaum.txt pb.txt
+    \end{lstlisting}
+        
+        Die Kopie darf nicht den identischen Dateiname haben, wie die zu kopierende Datei. Sollte dies doch geschehen, wird der Kopiervorgang abgebrochen und mit einem Hinweis quittiert, die nachfolgend zu sehen ist. 
+        
+    \medskip
+    \begin{lstlisting}
+    cp pb.txt pb.txt
+    cp: 'pb.txt' and 'pb.txt' are the same file
+    \end{lstlisting}
+
+    Beim Kopiervorgang von Verzeichnissen ist zu beachten, dass stets die Option \texttt{-r} für \emph{">\textbf{r}ecursive"<} angegeben werden muss. Hierbei spielt es keine Rolle, ob das Verzeichnis leer ist, Dateien oder Unterverzeichnisse enthält.
+
+    \medskip
+    \begin{lstlisting}
+    cp meindir -r new_meindir
+    \end{lstlisting}
+
+        \medskip
+        
+        
+        \bigskip
+        \bigskip
+        \item[\textbf{14.}] Um die in der Teilaufgabe 5 erstellten Datei \texttt{prozessbaum.txt} aus dem Verzeichnis \texttt{meindir} zu löschen, kann der \emph{">\textbf{r}e\textbf{m}ove"<} Befehl verwendet werden. Dieser ist gut geeignet, um Dateien oder komplette Verzeichnisse zu löschen.
+        
+    \medskip
+    \begin{lstlisting}
+    rm prozessbaum.txt # löschen einer Datei
+    \end{lstlisting}
+
+    Der Vollständigkeit halber wird abschließend das Löschen eines Verzeichnisses gezeigt. Dieser Vorgang ist nicht analog zum Löschen einer Datei. Hier muss der \emph{">\textbf{r}e\textbf{m}ove \textbf{-r}ecursive"<} oder der \emph{">\textbf{r}e\textbf{m}ove \textbf{dir}ectory"<} Befehl verwendet werden.
+
+    \medskip
+    \begin{lstlisting}
+    # fehlerhaftes Löschen eines Verzeichnisses mit Fehlermeldung
+    rm meindir
+    rm: cannot remove 'meindir': Is a directory
+
+    # richtiges Löschen eines Verzeichnisses
+    rm -r meindir || rmdir meindir
+    \end{lstlisting}
+    
+\end{enumerate}
+
+
+\newpage
+
+
+
+
+
+
+%----------------------------------------------
+% AUFGABE B
+%----------------------------------------------
+
+
+\bigskip
+\item[\textbf{b)}] \textbf{Fragen zur bash -- Shell}
+\bigskip
+    
+\begin{itemize}
+    \item \fbox{\emph{Was enthalten die nachfolgenden Umgebungsvariablen?}}
+
+    \bigskip
+
+    \begin{itemize}
+        \item \textbf{\texttt{\$HOME}}
+        
+        Die Umgebungsvariable \texttt{\$HOME} beinhaltet den Pfad zum Homeverzeichnis. Nur hier hat ein Benutzer volle Schreib- und Leserechte, daher sollten alle Daten hier abgespeichert werden. Außerdem ist zu beachten, dass Linux anders als Windows \emph{case sensitive} ist. Das bedeutet, dass die Dateien \texttt{heute.txt} und \texttt{Heute.txt} zwei völlig unterschiedliche Dateien sind.
+
+        Wird nur \texttt{\$HOME} eingegeben, wird der nachfolgende Hinweis geliefert. 
+
+    \medskip
+    \begin{lstlisting}
+    $HOME
+    -bash: /home/students/abr561: Is a directory
+    \end{lstlisting}
+
+        Wird die Umgebungsvariable \texttt{\$HOME} in Kombination mit dem \texttt{echo} Befehl eingegeben, dann wird die Information, welche die Umgebungsvariable hält, ausgelesen und auf der Standardausgabe geliefert.
+
+    \medskip
+    \begin{lstlisting}
+    echo $HOME
+    /home/students/abr561
+    \end{lstlisting}
+
+        \bigskip
+
+        \item \textbf{\texttt{\$PATH}}
+            
+        Wird die Umgebungsvariable \texttt{\$PATH} in Kombination mit dem \texttt{echo} Befehl eingegeben, dann werden alle Pfade geliefert, welche die Umgebungsvariable hält. Außerdem ist \texttt{\$PATH} erweiterbar (siehe Seite \pageref{pathextend}).
+            
+    \medskip
+    \begin{lstlisting}
+    echo $PATH
+    /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:   /bin:/usr/games:/usr/local/games:/snap/bin
+    \end{lstlisting}
+
+        Die Pfade werden durch ein \emph{">:"<} getrennt dargestellt. Aufgestückelte ergibt dies neun Einzelpfade, welche \texttt{\$PATH} zu  diesem Zeitpunkt enthält.
+    
+    \medskip
+    \begin{lstlisting}
+    /usr/local/sbin
+    /usr/local/bin
+    /usr/sbin
+    /usr/bin
+    /sbin
+    /bin
+    /usr/games
+    /usr/local/games
+    /snap/bin
+    \end{lstlisting}
+
+    \medskip
+        
+        \item \textbf{\texttt{\$UID}} und \textbf{\texttt{\$USER}}
+            
+        \medskip
+        
+        Die Umgebungsvariable \texttt{\$UID} enthält die Benutzerkennungsnummer (auch \emph{">user identifier"<}). Der UID steht die GID gegenüber, also die Gruppen-Erkennungsnummer (auch \emph{">group identifier"<}).
+        
+        Die Umgebungsvaribale \texttt{\$USER} enthält den aktuellen Benuzternamen, der stets mit \texttt{echo \$USER} abgefragt werden kann. Zusätzlich steht dieser immer als erstes vor der Eingabeaufforderung: \texttt{abr561@shell-18:\textasciitilde\$} \dots 
+    
+    \medskip    
+    \begin{lstlisting}
+    echo $UID
+    32190
+
+    echo $USER
+    abr561
+    \end{lstlisting}
+\end{itemize}
+        
+        \bigskip
+        
+        \item \fbox{\emph{Was bewirkt der Befehl \texttt{cd \textasciitilde}? Gibt es eine einfachere Alternative?}} 
+        
+        \medskip
+        
+        Mit dem Befehl \texttt{cd \textasciitilde{}} wird in das Homeverzeichnis gewechselt. Eine einfachere Alternative wäre der Aufruf von \texttt{cd} ohne weitere Angaben die darauf folgen.
+        
+    \medskip
+    \begin{lstlisting}
+    cd # Wechsel in das Homeverzeichnis
+    \end{lstlisting}
+    
+        Neben den Aufruf \texttt{cd} oder von \texttt{cd \textasciitilde} gibt es noch zwei weitere Möglichkeiten, die aber umständlicher sind, als die zwei bisherigen Varianten.
+
+    \medskip
+    \begin{lstlisting}
+    cd $HOME # Wechsel mit Umgebungsvariable
+    cd /home/students/abr561 # Wechsel mit Pfadangabe
+    \end{lstlisting}
+
+        \bigskip
+        
+        \item \fbox{\parbox{\linewidth}{\emph{Welche Funktion haben die nachfolgenden Tastatureingaben im Terminal, sofern die Eingabzeile (auch Prompt genannt) leer ist?}}}
+        
+        \medskip
+            
+        \begin{itemize}
+            \item \keys{\arrowkeyup} oder  \keys{\arrowkeydown}
+            
+            Mit Hilfe der Pfeiltasten hat man die Möglichkeit, durch vergangene Befehle \emph{durchzublättern}, die man bereits eingegeben hat.
+            
+            Mit \keys{\arrowkeyup} blättert man vom neusten zum ältesten Befehl nach oben. Man erreicht also den chronologisch ältesten Befehl, je höher man kommt. Dieser Effekt hat auch bestand, nachdem das Terminal erneut geöffnet wurde.
+            
+            Mit \keys{\arrowkeydown} blättert man vom ältesten wieder zurück zum neusten Befehl nach unten. Man erreicht also den chronologisch neusten Befehl, je tiefer man kommt. Ist die Zeile wieder leer und hat man den zuletzt eingegebenen Befehl übersprungen, so hat diese Taste keinen weiteren Effekt mehr.
+            
+            \medskip
+            
+            \item \keys{Strg + D}
+            
+            Mit dieser Tastenkombination wird die Eingabeaufforderung geschlossen und ist somit vergleichbar mit \keys{Alt + F4} bzw. \keys{\cmd + Q} für offene Fenster.
+        \end{itemize} 
+    \end{itemize}
+\end{itemize}

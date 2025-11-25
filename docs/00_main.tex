@@ -1,0 +1,109 @@
+
+% --------------------------------------------------
+% Präambel
+% --------------------------------------------------
+\documentclass[12pt,a4paper,twoside]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,mathtools}
+\usepackage{graphicx,subfig}
+\usepackage{geometry}
+\usepackage{lmodern}
+\usepackage{parskip}
+\usepackage{url}
+\usepackage{emptypage} 
+\usepackage{scrlayer-scrpage}
+\usepackage{chngcntr}
+\usepackage{booktabs}
+\usepackage{xcolor} 
+\usepackage[hang,perpage]{footmisc}
+\usepackage{menukeys}
+\usepackage{eurosym}
+\usepackage{multicol}
+\usepackage{framed}
+
+\usepackage{listings}
+\lstset{
+  backgroundcolor = \color{lightgray!30},
+  basicstyle=\footnotesize,
+  language=Bash,
+  breakatwhitespace=false,
+  breaklines=true,
+  extendedchars=true,
+  frame=single,
+  %frame=leftline,
+  framerule=.3mm,
+  %frame=trBL,
+  frame=shadowbox,
+  rulesepcolor=\color{gray},
+  keywordstyle=\bf,
+  showspaces=false,     
+  showstringspaces=false,
+  showtabs=false, 
+  tabsize=2,     
+  numbers=left,
+  %xleftmargin=2em,
+  %framexleftmargin=2em
+}
+
+
+\lstset{literate=%
+  {Ö}{{\"O}}1
+  {Ä}{{\"A}}1
+  {Ü}{{\"U}}1
+  {ß}{{\ss}}1
+  {ü}{{\"u}}1
+  {ä}{{\"a}}1
+  {ö}{{\"o}}1
+}
+
+\pagestyle{scrheadings}
+\geometry{top=3.5cm, left=3cm, right=2cm, bottom=3.5cm}
+
+\renewcommand\footnotemargin{.8em}
+\addtolength{\skip\footins}{2ex}
+\addtolength{\footnotesep}{1.5ex}
+
+\setlength{\headheight}{1.1\baselineskip}
+
+\title{\textbf{Rechnernetze und Betriebssysteme} \\ 
+    \begin{center}
+        \vspace{.5cm} \emph{\Large{Aufgabenblatt 1}} \\ 
+        \vspace{1.5cm} \Large{\textbf{\emph{B}ourne-\emph{a}gain \emph{sh}ell}} \vspace{1cm}
+    \end{center}
+}
+
+\author{Steven Illg \\
+\medskip}
+\date{\medskip März / April 2019 \\ \vspace{2cm} Prof. Dr.-Ing. Martin Hübner \\  \vspace{.5cm} Hartmut Schulz \\ Daniel Sarnow \vfill Dieses Dokument wurde mit dem Overleaf-\LaTeX{}-Editor erstellt}
+
+
+% --------------------------------------------------
+% Beginn des Dokuments
+% --------------------------------------------------
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+
+\thispagestyle{empty}
+\cleardoublepage
+
+%\ihead{INHALTSVERZEICHNIS}
+%\tableofcontents 
+%\cleardoublepage
+
+\include{01_aufg1}
+\include{02_aufg2}
+\include{03_abspann}
+
+\end{document}
+
+% --------------------------------------------------
+% Ende des Dokuments
+% --------------------------------------------------
