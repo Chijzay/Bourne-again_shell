@@ -33,7 +33,7 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 │   ├── 01_aufg1.tex		# Ausarbeitung Aufgabe 1
 │   ├── 02_aufg2.tex		# Ausarbeitung Aufgabe 1
 │   ├── 03_abspann.tex		# Literaturverzeichnis
-│   └── images/ 				# Screenshots
+│   └── images/ 			# Screenshots
 ├── scripts/
 │   ├── pf.sh				# Prozess-Filter-Skript
 │   └── frename.sh      	# Umbenennungs-Skript
@@ -41,6 +41,7 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
 
 
 
