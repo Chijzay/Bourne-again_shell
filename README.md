@@ -38,7 +38,6 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 │   ├── pf.sh				# Prozess-Filter-Skript
 │   └── frename.sh      	# Umbenennungs-Skript
 ├── Bourne-again_shell.pdf	# Fertiges PDF der Dokumentation
-├── .gitattributes
 ├── .gitignore
 ├── LICENSE
 └── README.md
