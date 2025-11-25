@@ -1,5 +1,6 @@
-# Alle SQL-Dateien als Code erfassen
-*.sql linguist-detectable=true
+# Alle Shell- und LaTeX-Dateien als Code erfassen
+*.sh linguist-detectable=true
+*.tex linguist-detectable=true
 
 # PDF nur als Doku zählen, nicht als Hauptsprache
 *.pdf linguist-documentation=true
