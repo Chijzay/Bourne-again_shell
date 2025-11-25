@@ -1,6 +1,6 @@
 # Bash-Dokumentation
 
-Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again shell (bash) inklusive LaTeX-Dokumentation und Beispielskripten. Die Ausarbeitung entstand im Rahmen der Veranstaltung **„Rechnernetze und Betriebssysteme“** und behandelt praxisnah die Arbeit auf der Kommandozeile unter Linux.
+Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again shell (bash) inklusive LaTeX-Dokumentation und Beispielskripten. Die Ausarbeitung entstand im Rahmen der Veranstaltung __Rechnernetze und Betriebssysteme__ und behandelt praxisnah die Arbeit auf der Kommandozeile unter Linux.
 
 ## Inhalte
 
@@ -42,6 +42,7 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
 
 
 
