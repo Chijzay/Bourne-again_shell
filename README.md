@@ -1,4 +1,4 @@
-# Bash-Dokumentation (Rechnernetze und Betriebssysteme – Aufgabenblatt 1)
+# Bash-Dokumentation (Rechnernetze und Betriebssysteme)
 
 Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again shell (bash) inklusive LaTeX-Dokumentation und Beispielskripten.
 
@@ -43,4 +43,5 @@ Die Ausarbeitung entstand im Rahmen der Veranstaltung **„Rechnernetze und Betr
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
 
