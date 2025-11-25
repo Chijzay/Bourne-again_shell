@@ -7,7 +7,7 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 - Erste Schritte mit der bash
   - Navigation im Dateisystem (`ls`, `cd`, `mkdir`, `rm`)
   - Arbeiten mit Dateien (`cat`, `less`, `more`, `head`, `tail`)
-  - Speicher & Dateisystem (`df -h`, Umleitung mit `>` / `>>`)
+  - Speicher und Dateisystem (`df -h`, Umleitung mit `>` / `>>`)
   - Prozessverwaltung (`ps`, `pstree`, `more`)
 - Umgebungsvariablen
   - `HOME`, `PATH`, `UID`, `USER`
@@ -42,6 +42,7 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
 
 
 
