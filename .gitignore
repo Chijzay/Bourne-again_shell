@@ -1,0 +1,38 @@
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lot
+*.lol
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.run.xml
+*.bcf
+
+# Editor / system files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*~
+*.bak
+
+# Generated PDFs (optional – entferne es, falls du das PDF versionieren möchtest)
+# *.pdf
+
+# Bash & scripts
+*.swp

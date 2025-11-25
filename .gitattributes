@@ -1,0 +1,5 @@
+# Alle SQL-Dateien als Code erfassen
+*.sql linguist-detectable=true
+
+# PDF nur als Doku zählen, nicht als Hauptsprache
+*.pdf linguist-documentation=true
