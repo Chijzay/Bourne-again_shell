@@ -1,4 +1,4 @@
-# Bash-Dokumentation (Rechnernetze und Betriebssysteme)
+# Bash-Dokumentation
 
 Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again shell (bash) inklusive LaTeX-Dokumentation und Beispielskripten. Die Ausarbeitung entstand im Rahmen der Veranstaltung **„Rechnernetze und Betriebssysteme“** und behandelt praxisnah die Arbeit auf der Kommandozeile unter Linux.
 
@@ -38,9 +38,11 @@ Dieses Repository enthält eine deutschsprachige Einführung in die Bourne-again
 │   ├── pf.sh				# Prozess-Filter-Skript
 │   └── frename.sh      	# Umbenennungs-Skript
 ├── Bourne-again_shell.pdf	# Fertiges PDF der Dokumentation
+├── .gitattributes
 ├── .gitignore
 ├── LICENSE
 └── README.md
+
 
 
 
