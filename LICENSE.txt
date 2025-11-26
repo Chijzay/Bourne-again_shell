@@ -1,23 +1,32 @@
-Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
+Portfolio-Viewing-Only License (Custom)
 
-Copyright (c) 2019 Steven Illg
+Copyright (c) 2019-2025 Steven Illg
 
-This work is licensed under the Creative Commons 
-Attribution-NonCommercial-NoDerivatives 4.0 International License.
+This repository, including all documents, texts, graphics, files, source Codes and 
+any other included materials, is provided solely for the purpose of 
+personal presentation in the author's professional portfolio.
 
-You are free to:
+Permitted Use:
+- You may view the Work directly on the author's GitHub profile for the purpose 
+  of evaluation of the author's skills and qualifications.
 
-- Share — copy and redistribute the material in any medium or format
+Prohibited Use:
+- You may NOT download, copy, reproduce, distribute, share, publish, or 
+  otherwise transfer the Work, in whole or in part.
+- You may NOT modify, transform, adapt, or create derivative works based on the Work.
+- You may NOT use the Work for any commercial, educational, or private purpose.
+- You may NOT include the Work in any software, dataset, documentation, 
+  training material, book, website, or digital/physical product.
+- You may NOT publish the Work, in whole or in part, on any other platform 
+  (including but not limited to GitHub forks, websites, cloud drives, 
+  social media, academic repositories, or file-sharing services).
 
-Under the following terms:
+Ownership:
+- All rights remain exclusively with the author.
+- No license to copy, distribute, or exploit the Work is granted or implied.
 
-- Attribution — You must give appropriate credit.
-- NonCommercial — You may not use the material for commercial purposes.
-- NoDerivatives — If you remix, transform, or build upon the material, 
-  you may not distribute the modified material.
+Limitation:
+- The Work is made available solely as part of the author's personal portfolio. 
+  Any use outside of viewing for evaluation purposes is strictly forbidden.
 
-No additional restrictions — You may not apply legal terms or technological 
-measures that legally restrict others from doing anything the license permits.
-
-A copy of the full license is available at:
-https://creativecommons.org/licenses/by-nc-nd/4.0/
+By accessing this repository, you agree to abide by these terms.
